@@ -1,4 +1,4 @@
-# Helm Charts for deployment of Integrator profile of WSO2 Identity Server
+# Helm Charts for deployment of WSO2 Identity Server with Analytics
 
 ## Prerequisites
 
@@ -13,13 +13,13 @@ steps provided in the following quick start guide.<br><br>
 * Install [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/). This can
  be easily done via 
   ```
-  helm install stable/nginx-ingress --name nginx-wso2is --set rbac.create=true
+  helm install stable/nginx-ingress --name nginx-wso2is-analytics --set rbac.create=true
   ```
 ## Quick Start Guide
 >In the context of this document, <br>
 >* `KUBERNETES_HOME` will refer to a local copy of the [`wso2/kubernetes-is`](https://github.com/wso2/kubernetes-is/)
 Git repository. <br>
->* `HELM_HOME` will refer to `<KUBERNETES_HOME>/helm/scalable-is`. <br>
+>* `HELM_HOME` will refer to `<KUBERNETES_HOME>/helm/scalable-is-with-analytics`. <br>
 
 ##### 1. Checkout Kubernetes Resources for WSO2 Identity server Git repository:
 
@@ -29,10 +29,10 @@ git clone https://github.com/wso2/kubernetes-is.git
 
 ##### 2. Provide configurations:
 
-1. The default product configurations are available at `<HELM_HOME>/scalable-is-conf/confs` folder. Change the 
+1. The default product configurations are available at `<HELM_HOME>/scalable-is-is-with-analytics-conf/confs` folder. Change the 
 configurations as necessary.
 
-2. Open the `<HELM_HOME>/scalable-is-conf/values.yaml` and provide the following values.
+2. Open the `<HELM_HOME>/scalable-is-is-with-analytics-conf/values.yaml` and provide the following values.
 
     `username`: Username of your Free Trial Subscription<br>
     `password`: Password of your Free Trial Subscription<br>
@@ -42,7 +42,7 @@ configurations as necessary.
     `serverIp`: NFS Server IP<br>
     `locationPath`: NFS location path
     
-3. Open the `<HELM_HOME>/scalable-is-deployment/values.yaml` and provide the following values.
+3. Open the `<HELM_HOME>/scalable-is-is-with-analytics-deployment/values.yaml` and provide the following values.
 
     `namespace`: Namespace<br>
     `svcaccount`: Service Account
@@ -50,14 +50,14 @@ configurations as necessary.
 ##### 3. Deploy the configurations:
 
 ```
-helm install --name <RELEASE_NAME> <HELM_HOME>/scalable-integrator-conf
+helm install --name <RELEASE_NAME> <HELM_HOME>/scalable-is-is-with-analytics-conf
 ```
 
 ##### 4. Deploy MySql:
 If there is an external product database(s), add those configurations as stated at `step 2.1`. Otherwise, run the below
  command to create the product database. 
 ```
-helm install --name wso2is-scalable-is-rdbms-service -f <HELM_HOME>/mysql/values.yaml 
+helm install --name wso2is-scalable-is-with-analytics-rdbms-service -f <HELM_HOME>/mysql/values.yaml 
 stable/mysql --namespace <NAMESPACE>
 ```
 `NAMESPACE` should be same as `step 2.2`.
@@ -65,14 +65,14 @@ stable/mysql --namespace <NAMESPACE>
 ##### 5. Deploy WSO2 Enterprise Identity server:
 
 ```
-helm install --name <RELEASE_NAME> <HELM_HOME>/scalable-is-deployment
+helm install --name <RELEASE_NAME> <HELM_HOME>/scalable-is-with-analytics-deployment
 ```
 
 ##### 6. Access Management Console:
 
 Default deployment will expose two publicly accessible hosts, namely:<br>
 1. `wso2is-scalable-is` - To expose Administrative services and Management Console<br>
-2. `wso2is-scalable-is-gateway` - To expose Mediation Gateway<br>
+2. `wso2is-analytics` - To expose Analytics server<br>
 
 To access the console in a test environment,
 
@@ -81,16 +81,16 @@ To access the console in a test environment,
 e.g.
 
 ```
-NAME                                             HOSTS                                ADDRESS          PORTS     AGE
-wso2is-scalable-is-gateway-tls-ingress   wso2is-scalable-is-gateway                   <EXTERNAL-IP>    80, 443   9m
-wso2is-scalable-is-ingress               wso2is-scalable-is                           <EXTERNAL-IP>    80, 443   9m
+NAME                                              HOSTS                           ADDRESS          PORTS   AGE
+wso2is-with-analytics-is-analytics-ingress   wso2is-analytics                   <EXTERNAL-IP>    80, 443   9m
+wso2is-with-analytics-scalable-is-ingress    wso2is-scalable-is                 <EXTERNAL-IP>    80, 443   9m
 ```
 
 2. Add the above two hosts as entries in /etc/hosts file as follows:
 
 ```
 <EXTERNAL-IP>	wso2is-scalable-is
-<EXTERNAL-IP>	wso2is-scalable-is-gateway
+<EXTERNAL-IP>	wso2is-analytics
 ```
 
 3. Try navigating to `https://wso2is-scalable-is/carbon` from your favorite browser.
