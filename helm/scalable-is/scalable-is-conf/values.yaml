@@ -4,6 +4,6 @@ email: "<EMAIL>"
 
 namespace: "wso2"
 svcaccount: "wso2svc-account"
-serverIp: 10.128.0.6
-sharedDeploymentLocationPath: "/data/deployment"
-sharedTentsLocationPath: "/data/tenants"
+serverIp: "<SERVER_IP>"
+sharedDeploymentLocationPath: "<NFS_LOCATION_PATH>"
+sharedTentsLocationPath: "<NFS_LOCATION_PATH>"
