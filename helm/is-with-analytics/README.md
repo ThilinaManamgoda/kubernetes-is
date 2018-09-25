@@ -73,8 +73,6 @@ b. Open the `<HELM_HOME>/is-with-analytics/values.yaml` and provide the followin
 | `serverIp`                      | NFS Server IP                                                                             |
 | `sharedDeploymentLocationPath`  | NFS shared deployment directory(`<IS_HOME>/repository/deployment`) location for IS       |
 | `sharedTenantsLocationPath`     | NFS shared tenants directory(`<IS_HOME>/repository/tenants`) location for IS             |
-| `analytics1DataLocationPath`    | NFS volume for Indexed data for Analytics node 1(`<DAS_HOME>/repository/data`)            |
-| `analytics2DataLocationPath`    | NFS volume for Indexed data for Analytics node 2(`<DAS_HOME>/repository/data`)            |
 
 
 
@@ -99,7 +97,7 @@ helm install --name <RELEASE_NAME> <HELM_HOME>/is-with-analytics --namespace <NA
 
 ##### 6. Access Management Console.
 
-Default deployment will expose `wso2is` and `wso2is-analytics` hosts (to expose Administrative services and Management Console).
+Default deployment will expose `wso2is` and `wso2is-analytics-dashboard` hosts (to expose Administrative services and Management Console).
 
 To access the console in the environment,
 
@@ -110,17 +108,17 @@ kubectl get ing
 ```
 
 ```
-NAME                                         HOSTS              ADDRESS        PORTS     AGE
-wso2is-with-analytics-is-analytics-ingress   wso2is-analytics   <EXTERNAL-IP>   80, 443   3m
-wso2is-with-analytics-is-ingress             wso2is             <EXTERNAL-IP>   80, 443   3m
-```
+NAME                                         HOSTS                         ADDRESS        PORTS     AGE
+wso2is-with-analytics-is-dashboard-ingress   wso2is-analytics-dashboard   <EXTERNAL-IP>   80, 443   3m
+wso2is-with-analytics-is-ingress             wso2is                       <EXTERNAL-IP>   80, 443   3m
+``` 
 
 b. Add the above host as an entry in /etc/hosts file as follows:
 
 ```
-<EXTERNAL-IP>	wso2is-analytics
+<EXTERNAL-IP>	wso2is-analytics-dashboard
 <EXTERNAL-IP>	wso2is
 ```
 
-c. Try navigating to `https://wso2is/carbon` and `https://wso2is-analytics/carbon` from your favorite browser.
+c. Try navigating to `https://wso2is/carbon` and `https://wso2is-analytics-dashboard/portal` from your favorite browser.
 

@@ -15,11 +15,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: is-analytics-2-conf-axis2
+  name: is-analytics-1-conf-worker
   namespace : {{ .Values.namespace }}
 data:
   {{- $file := .Files }}
-  {{- range $path, $byte := .Files.Glob "confs/is-analytics-2/conf/axis2/*" }}
+  {{- range $path, $byte := .Files.Glob "confs/is-analytics-1/conf/worker/*" }}
   {{- $list := $path | splitList "/"}}
   {{- $length := len $list }}
   {{- $last := add $length -1 }}
