@@ -41,8 +41,6 @@ resources defined in the `<HELM_HOME>/is-with-analytics/values.yaml` file:
 
 * `sharedDeploymentLocationPath`
 * `sharedTenantsLocationPath`
-* `analytics1DataLocationPath`
-* `analytics2DataLocationPath`
 
 Grant ownership to `wso2carbon` user and `wso2` group, for each of the previously created directories.
 
