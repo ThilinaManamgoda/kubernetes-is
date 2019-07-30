@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: wso2is
-        {{- if or (eq .Values.username "") (eq .Values.password "") }}
+        {{- if or (eq .Values.wso2.subscription.username "") (eq .Values.wso2.subscription.password "") }}
         image: wso2/wso2is:5.8.0
         {{- else }}
         image: docker.wso2.com/wso2is:5.8.0
@@ -79,7 +79,7 @@ spec:
         - name: shared-tenants-persistent-disk
           mountPath: /home/wso2carbon/wso2is-5.8.0/repository/tenants
       serviceAccountName: {{ .Values.svcaccount }}
-      {{ if and (not (eq .Values.username "")) (not (eq .Values.password "")) }}
+      {{ if and (not (eq .Values.wso2.subscription.username "")) (not (eq .Values.wso2.subscription.password "")) }}
       imagePullSecrets:
       - name: wso2creds
       {{ end }}

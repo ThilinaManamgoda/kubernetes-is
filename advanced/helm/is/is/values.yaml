@@ -1,5 +1,8 @@
-username: ""
-password: ""
+wso2:
+  subscription:
+    username: ""
+    password: ""
+
 email: ""
 svcaccount: "wso2svc-account"
 serverIp: ""
