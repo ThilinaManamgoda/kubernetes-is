@@ -25,31 +25,34 @@ spec:
       maxSurge: {{ default 1 .Values.wso2.deployment.wso2is.strategy.rollingUpdate.maxSurge }}
       maxUnavailable: {{ default 0 .Values.wso2.deployment.wso2is.strategy.rollingUpdate.maxUnavailable }}
     type: RollingUpdate
+  selector:
+    matchLabels:
+      deployment: wso2is
   template:
     metadata:
       labels:
         deployment: wso2is
     spec:
       initContainers:
-        - name: init-is-db
-          image: busybox:1.31
-          command: ['sh', '-c', 'echo -e "Checking for the availability of MySQL Server deployment"; while ! nc -z wso2is-rdbms-service-mysql 3306; do sleep 1; printf "-"; done; echo -e "  >> MySQL Server has started";']
-        {{ if .Values.wso2.centralizedLogging.enabled }}
-        - name: init-logstash-plugins-install
-          image: docker.elastic.co/logstash/logstash:{{ default "7.2.0" .Values.wso2.centralizedLogging.logstash.imageTag }}
-          command:
-            - /bin/bash
-            - "-c"
-            - |
-              set -e
-              ./bin/logstash-plugin install logstash-codec-multiline logstash-filter-grok
-          volumeMounts:
-            - name: shared-plugins
-              mountPath: /usr/share/logstash/plugins/
-        - name: init-elasticsearch
-          image: busybox:1.31
-          command: ['sh', '-c', 'echo -e "Checking for the availability of Elasticsearch Server deployment"; while ! nc -z wso2-elasticsearch-master 9200; do sleep 1; printf "-"; done; echo -e "  >> Elasticsearch server has started";']
-        {{ end }}
+      - name: init-is-db
+        image: busybox:1.31
+        command: ['sh', '-c', 'echo -e "Checking for the availability of MySQL Server deployment"; while ! nc -z wso2is-rdbms-service-mysql 3306; do sleep 1; printf "-"; done; echo -e "  >> MySQL Server has started";']
+      {{ if .Values.wso2.centralizedLogging.enabled }}
+      - name: init-logstash-plugins-install
+        image: docker.elastic.co/logstash/logstash:{{ default "7.2.0" .Values.wso2.centralizedLogging.logstash.imageTag }}
+        command:
+          - /bin/bash
+          - "-c"
+          - |
+            set -e
+            ./bin/logstash-plugin install logstash-codec-multiline logstash-filter-grok
+        volumeMounts:
+          - name: shared-plugins
+            mountPath: /usr/share/logstash/plugins/
+      - name: init-elasticsearch
+        image: busybox:1.31
+        command: ['sh', '-c', 'echo -e "Checking for the availability of Elasticsearch Server deployment"; while ! nc -z wso2-elasticsearch-master 9200; do sleep 1; printf "-"; done; echo -e "  >> Elasticsearch server has started";']
+      {{ end }}
       containers:
       - name: wso2is
         {{- if .Values.wso2.dockerRegistry }}
@@ -118,7 +121,7 @@ spec:
             mountPath: /usr/share/logstash/plugins/
         env:
           - name: NODE_ID
-            value: {{ default "wso2apim-pub-store-tm-node-1" .Values.wso2.centralizedLogging.logstash.indexNodeID.wso2PubStoreTmNode1 }}
+            value: {{ default "wso2is-node" .Values.wso2.centralizedLogging.logstash.indexNodeID.wso2ISNode }}
           - name: NODE_IP
             valueFrom:
               fieldRef:
