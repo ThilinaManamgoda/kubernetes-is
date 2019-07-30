@@ -20,7 +20,46 @@ wso2:
       nfsServerIP: ""
       sharedDeploymentLocationPath: ""
       sharedTenantsLocationPath: ""
+    wso2is:
+      imageName: "wso2is"
+      imageTag: "5.8.0"
+      replicas: 1
+      minReadySeconds: 30
+      strategy:
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+      livenessProbe:
+        initialDelaySeconds: 250
+        periodSeconds: 10
+      readinessProbe:
+        initialDelaySeconds: 250
+        periodSeconds: 10
+  centralizedLogging:
+    enabled: true
+    logstash:
+      imageTag: 7.2.0
+      elasticsearch:
+        username: "elastic"
+        password: "changeme"
+      indexNodeID:
+        wso2ISNode: "wso2is-node"
+
 kubernetes:
   svcaccount: "wso2svc-account"
 
+# Parameters required to configure Elasticsearch and Kibana sub-charts for centralized logging.
+elasticsearch:
+  clusterName: wso2-elasticsearch
+
+kibana:
+  nameOverride: "wso2am-kibana"
+  elasticsearchHosts: "http://wso2-elasticsearch-master:9200"
+  ingress:
+    enabled: true
+    hosts:
+      - wso2am-kibana
+    tls:
+      - hosts:
+          - wso2am-kibana
 
