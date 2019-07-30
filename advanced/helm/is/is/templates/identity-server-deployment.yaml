@@ -78,7 +78,7 @@ spec:
           mountPath: /home/wso2carbon/wso2is-5.8.0/repository/deployment
         - name: shared-tenants-persistent-disk
           mountPath: /home/wso2carbon/wso2is-5.8.0/repository/tenants
-      serviceAccountName: {{ .Values.svcaccount }}
+      serviceAccountName: {{ .Values.kubernetes.svcaccount }}
       {{ if and (not (eq .Values.wso2.subscription.username "")) (not (eq .Values.wso2.subscription.password "")) }}
       imagePullSecrets:
       - name: wso2creds

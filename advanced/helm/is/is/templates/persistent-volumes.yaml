@@ -27,8 +27,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: {{ .Values.serverIp }}
-    path: {{ .Values.sharedDeploymentLocationPath }}
+    server: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.nfsServerIP }}
+    path: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedDeploymentLocationPath }}
 
 ---
 
@@ -46,6 +46,6 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: {{ .Values.serverIp }}
-    path: {{ .Values.sharedTenantsLocationPath }}
+    server: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.nfsServerIP }}
+    path: {{ .Values.wso2.deployment.persistentRuntimeArtifacts.sharedTenantsLocationPath }}
 {{- end }}
